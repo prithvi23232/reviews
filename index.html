@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prithvi Design — Client Reviews</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080810;
+    --bg2: #0d0d1a;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-hover: rgba(255,255,255,0.07);
+    --text: #f0f0f8;
+    --muted: rgba(240,240,248,0.45);
+    --accent-1: #7c6fff;
+    --accent-2: #ff6b9d;
+    --accent-3: #00d4aa;
+    --accent-4: #ff9f43;
+    --accent-5: #54a0ff;
+    --accent-6: #ee5a24;
+    --star: #ffd32a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,111,255,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255,107,157,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0,212,170,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Header */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 24px 60px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124,111,255,0.12);
+    border: 1px solid rgba(124,111,255,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #a89fff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7c6fff;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .avatar-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #7c6fff, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    position: relative;
+  }
+
+  .avatar-ring::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c6fff, #ff6b9d, #00d4aa);
+    z-index: -1;
+    animation: spin 4s linear infinite;
+  }
+
+  .avatar-ring::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: var(--bg);
+    z-index: -1;
+    margin: 3px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 40px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    padding: 16px 32px;
+    text-align: center;
+    position: relative;
+  }
+
+  .stat + .stat::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: var(--glass-border);
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #7c6fff, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* Search/filter bar */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    padding: 0 24px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-wrap {
+    position: relative;
+  }
+
+  .search-wrap input {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 10px 20px 10px 40px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    width: 240px;
+    backdrop-filter: blur(20px);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap input:focus {
+    border-color: rgba(124,111,255,0.4);
+    background: rgba(124,111,255,0.06);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .filter-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    backdrop-filter: blur(20px);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(124,111,255,0.15);
+    border-color: rgba(124,111,255,0.35);
+    color: #a89fff;
+  }
+
+  /* Masonry grid */
+  .masonry-container {
+    position: relative;
+    z-index: 10;
+    padding: 0 24px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    columns: 4;
+    column-gap: 16px;
+  }
+
+  @media (max-width: 1100px) { .masonry-container { columns: 3; } }
+  @media (max-width: 768px) { .masonry-container { columns: 2; } }
+  @media (max-width: 480px) { .masonry-container { columns: 1; } }
+
+  /* Review card */
+  .card {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  }
+
+  .card:hover {
+    transform: translateY(-4px) scale(1.01);
+    background: var(--glass-hover);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Color accent strip per card */
+  .card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 20px 0 0 20px;
+  }
+
+  /* Card header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+
+  .card-username {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .card-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+
+  .badge-verified {
+    background: rgba(0,212,170,0.12);
+    color: #00d4aa;
+    border: 1px solid rgba(0,212,170,0.2);
+  }
+
+  .badge-deleted {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Stars */
+  .stars {
+    font-size: 12px;
+    color: var(--star);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* Content */
+  .card-content {
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(240,240,248,0.8);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  /* Attachment image */
+  .card-image {
+    margin-top: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+  }
+
+  .card-image img {
+    width: 100%;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover .card-image img { transform: scale(1.03); }
+
+  /* Footer */
+  .card-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--muted);
+    font-size: 15px;
+    display: none;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--glass-border);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  footer span {
+    background: linear-gradient(135deg, #7c6fff, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* Loading state */
+  .loading {
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--glass-border);
+    border-top-color: #7c6fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  .loading p { color: var(--muted); font-size: 14px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(124,111,255,0.3); border-radius: 2px; }
+
+  /* Live indicator */
+  .live-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #00d4aa;
+    font-weight: 500;
+  }
+
+  .live-dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00d4aa;
+    animation: pulse 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Verified Client Reviews</div>
+  <div class="avatar-ring">P</div>
+  <h1>Prithvi Design</h1>
+  <p class="subtitle">Real feedback from real clients · <span class="live-dot">Updates live</span></p>
+
+  <div class="stats-row" id="statsRow">
+    <div class="stat">
+      <div class="stat-num" id="totalCount">—</div>
+      <div class="stat-label">Total Reviews</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="uniqueCount">—</div>
+      <div class="stat-label">Unique Clients</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.9</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2022</div>
+      <div class="stat-label">Since</div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search reviews...">
+  </div>
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="verified">Verified only</button>
+  <button class="filter-btn" data-filter="recent">Most recent</button>
+  <button class="filter-btn" data-filter="oldest">Oldest first</button>
+</div>
+
+<div class="loading" id="loading">
+  <div class="loading-spinner"></div>
+  <p>Loading reviews from Firebase...</p>
+</div>
+
+<div class="masonry-container" id="grid" style="display:none"></div>
+<div class="no-results" id="noResults">No reviews match your search 👀</div>
+
+<footer>
+  Built with love by <span>Prithvi Design</span> · All reviews verified from Discord · Updates in real time
+</footer>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, onSnapshot, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY",
+  authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+  storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
+  appId: "REPLACE_WITH_YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const ACCENTS = [
+  'linear-gradient(180deg, #7c6fff, #a855f7)',
+  'linear-gradient(180deg, #ff6b9d, #f43f5e)',
+  'linear-gradient(180deg, #00d4aa, #059669)',
+  'linear-gradient(180deg, #ff9f43, #f59e0b)',
+  'linear-gradient(180deg, #54a0ff, #3b82f6)',
+  'linear-gradient(180deg, #ee5a24, #dc2626)',
+];
+
+const AVATAR_COLORS = [
+  'linear-gradient(135deg, #7c6fff, #a855f7)',
+  'linear-gradient(135deg, #ff6b9d, #f43f5e)',
+  'linear-gradient(135deg, #00d4aa, #059669)',
+  'linear-gradient(135deg, #ff9f43, #f59e0b)',
+  'linear-gradient(135deg, #54a0ff, #3b82f6)',
+  'linear-gradient(135deg, #ee5a24, #dc2626)',
+];
+
+let allReviews = [];
+let currentFilter = 'all';
+let searchTerm = '';
+
+function getAccent(username) {
+  let hash = 0;
+  for (let c of (username || '?')) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
+  return Math.abs(hash) % ACCENTS.length;
+}
+
+function formatDate(ts) {
+  try {
+    return new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch { return ''; }
+}
+
+function renderStars(n) {
+  n = Math.max(1, Math.min(5, n || 5));
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+
+function createCard(review, index) {
+  const i = getAccent(review.username);
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.animationDelay = `${Math.min(index * 0.05, 1)}s`;
+  card.dataset.username = (review.username || '').toLowerCase();
+  card.dataset.content = (review.content || '').toLowerCase();
+  card.dataset.deleted = review.isDeleted ? '1' : '0';
+  card.dataset.timestamp = review.timestamp || '';
+
+  const initials = review.isDeleted ? '?' : (review.username || '?').slice(0, 2).toUpperCase();
+
+  const avatarHtml = review.avatarUrl && !review.isDeleted
+    ? `<img src="${review.avatarUrl}" alt="${initials}" onerror="this.style.display='none';this.parentNode.innerHTML='${initials}'">`
+    : initials;
+
+  const imageHtml = review.attachments && review.attachments.length > 0
+    ? `<div class="card-image"><img src="${review.attachments[0]}" alt="attachment" loading="lazy"></div>`
+    : '';
+
+  card.innerHTML = `
+    <div class="card-accent" style="background:${ACCENTS[i]}"></div>
+    <div class="card-header">
+      <div class="card-avatar" style="background:${review.isDeleted ? '#1a1a2e' : AVATAR_COLORS[i]}">${avatarHtml}</div>
+      <div class="card-info">
+        <div class="card-username">${review.isDeleted ? 'Deleted User' : (review.username || 'Unknown')}</div>
+        <div class="card-date">${formatDate(review.timestamp)}</div>
+      </div>
+      <span class="card-badge ${review.isDeleted ? 'badge-deleted' : 'badge-verified'}">${review.isDeleted ? 'Deleted' : 'Verified'}</span>
+    </div>
+    <div class="stars">${renderStars(5)}</div>
+    <div class="card-content">"${review.content || ''}"</div>
+    ${imageHtml}
+    <div class="card-footer">${review.guild || 'Prithvi Design'} · #${review.channel || 'reviews'}</div>
+  `;
+
+  return card;
+}
+
+function applyFilters() {
+  const grid = document.getElementById('grid');
+  const cards = Array.from(grid.querySelectorAll('.card'));
+  let visible = 0;
+
+  cards.forEach(card => {
+    const matchSearch = !searchTerm
+      || card.dataset.username.includes(searchTerm)
+      || card.dataset.content.includes(searchTerm);
+    const matchFilter = currentFilter === 'all'
+      || (currentFilter === 'verified' && card.dataset.deleted === '0')
+      || currentFilter === 'recent'
+      || currentFilter === 'oldest';
+
+    if (matchSearch && matchFilter) {
+      card.style.display = '';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+}
+
+function renderReviews(reviews) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  let sorted = [...reviews];
+  if (currentFilter === 'recent') sorted.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  else if (currentFilter === 'oldest') sorted.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+  sorted.forEach((r, i) => grid.appendChild(createCard(r, i)));
+
+  document.getElementById('totalCount').textContent = reviews.length + '+';
+  const unique = new Set(reviews.filter(r => !r.isDeleted).map(r => r.username)).size;
+  document.getElementById('uniqueCount').textContent = unique + '+';
+
+  document.getElementById('loading').style.display = 'none';
+  grid.style.display = '';
+
+  applyFilters();
+}
+
+const q = query(collection(db, 'reviews'), orderBy('timestamp', 'asc'));
+onSnapshot(q, snapshot => {
+  allReviews = snapshot.docs.map(d => d.data());
+  renderReviews(allReviews);
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchTerm = e.target.value.toLowerCase().trim();
+  applyFilters();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderReviews(allReviews);
+  });
+});
+</script>
+</body>
+</html>
