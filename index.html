@@ -709,7 +709,7 @@ function renderReviews(reviews) {
   applyFilters();
 }
 
-const q = query(collection(db, 'reviews'), orderBy('timestamp', 'asc'));
+const q = query(collection(db, 'reviews'), orderBy('timestamp', 'desc'));
 onSnapshot(q, snapshot => {
   allReviews = snapshot.docs.map(d => d.data());
   renderReviews(allReviews);
